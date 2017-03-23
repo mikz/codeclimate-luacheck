@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+require 'linguist'
+require 'find'
+require 'json'
+
+config_file = ENV['CONFIG_FILE'] || '/config.json'
+config = JSON.parse(File.read(config_file))
+
+include_paths = config.fetch('include_paths', %w(.))
+
+Lua = Linguist::Language.find_by_name('Lua')
+
+files = []
+
+Find.find(*include_paths) do |path|
+  next unless FileTest.file?(path)
+
+  blob = Linguist::FileBlob.new(path)
+
+  case blob.language
+  when Lua
+    files << path
+  end
+end
+
+IO.popen(['luacheck', '--formatter', 'codeclimate', *files ]) do |io|
+  while (line = io.gets)
+    STDOUT.print line
+  end
+end

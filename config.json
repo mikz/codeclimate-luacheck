@@ -1,0 +1,1 @@
+{"enabled":true,"exclude_paths":["Dockerfile","bin/engine-lua-files","*.yml"],"include_paths":[".codeclimate.yml","bin/engine-luacheck","config.json","engine.json","Gemfile","Gemfile.lock","lib/codeclimate.lua","Makefile","README.md"]}

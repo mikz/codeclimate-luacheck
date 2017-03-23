@@ -1,0 +1,20 @@
+---
+engines:
+  luacheck:
+    enabled: true
+    exclude_paths:
+    - Dockerfile
+    - ".*.yml"
+  rubocop:
+    enabled: true
+  bundler-audit:
+    enabled: true
+  reek:
+    enabled: true
+ratings:
+  paths:
+  - "**/*.lua"
+  - bin/*
+exclude_paths:
+- lib/test.lua
+- "**/.*.swp"
