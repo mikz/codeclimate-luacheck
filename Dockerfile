@@ -1,7 +1,8 @@
 FROM alpine:3.5
 
-ARG LUA_VERSION=5.3
-ARG LUACHECK_VERSION=0.19.1
+LABEL maintainer "Michal Cichra <michal@cichra.cz>"
+ENV LUA_VERSION=5.3 LUACHECK_VERSION=0.19.1
+
 WORKDIR /tmp
 COPY Gemfile* /tmp/
 RUN adduser -D -H -h /code -u 9000 -s /bin/false app \

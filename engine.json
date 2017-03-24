@@ -3,9 +3,9 @@
   "description": "Luacheck is a static analyzer and a linter for Lua. Luacheck detects various issues such as usage of undefined global variables, unused variables and values, accessing uninitialized variables, unreachable code and more.",
   "maintainer": {
     "name": "Michal Cichra",
-    "email": "michal.cichra@gmail.com"
+    "email": "michal@cichra.cz"
   },
   "languages" : ["Lua"],
-  "version": "da5a2077",
-  "spec_version": "0.0.1"
+  "version": "0.19.1-0",
+  "spec_version": "0.3.1"
 }
