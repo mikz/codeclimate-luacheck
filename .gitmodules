@@ -1,0 +1,44 @@
+[submodule "integration/apicast"]
+	path = integration/apicast
+	url = https://github.com/3scale/apicast.git
+	ignore = dirty
+[submodule "integration/luacheck"]
+	path = integration/luacheck
+	url = https://github.com/mpeterv/luacheck.git
+	ignore = dirty
+[submodule "integration/luarocks"]
+	path = integration/luarocks
+	url = https://github.com/luarocks/luarocks.git
+	ignore = dirty
+[submodule "integration/kong"]
+	path = integration/kong
+	url = https://github.com/Mashape/kong.git
+	ignore = dirty
+[submodule "integration/nn"]
+	path = integration/nn
+	url = https://github.com/torch/nn.git
+	ignore = dirty
+[submodule "integration/OpenNMT"]
+	path = integration/OpenNMT
+	url = https://github.com/OpenNMT/OpenNMT.git
+	ignore = dirty
+[submodule "integration/awesome"]
+	path = integration/awesome
+	url = https://github.com/awesomeWM/awesome.git
+	ignore = dirty
+[submodule "integration/luvit"]
+	path = integration/luvit
+	url = https://github.com/luvit/luvit.git
+	ignore = dirty
+[submodule "integration/koreader"]
+	path = integration/koreader
+	url = https://github.com/koreader/koreader.git
+	ignore = dirty
+[submodule "integration/snabb"]
+	path = integration/snabb
+	url = https://github.com/snabbco/snabb.git
+	ignore = dirty
+[submodule "integration/ZeroBraneStudio"]
+	path = integration/ZeroBraneStudio
+	url = https://github.com/pkulchenko/ZeroBraneStudio.git
+	ignore = dirty

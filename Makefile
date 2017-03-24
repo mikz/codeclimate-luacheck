@@ -3,7 +3,7 @@ IMAGE_NAME ?= codeclimate/codeclimate-luacheck
 build:
 	docker build . -t $(IMAGE_NAME)
 test:
-	codeclimate analyze --dev
+	codeclimate analyze -e luacheck:stable --dev
 
 bash: USER = 9000
 bash:
@@ -17,3 +17,17 @@ local:
 codeclimate: export CODECLIMATE_DEBUG = 1
 codeclimate:
 	codeclimate analyze --dev
+
+INTEGRATIONS := $(wildcard integration/*/.)
+
+prepare:
+	@git submodule update --init --recursive
+
+integration: prepare $(INTEGRATIONS)
+
+$(INTEGRATIONS):
+	@touch $@codeclimate.yml
+	$(SHELL) -c "cd $@ && time codeclimate analyze -e luacheck:stable --dev"
+	@echo
+
+.PHONY: test local codeclimate bash prepare integration $(INTEGRATIONS)

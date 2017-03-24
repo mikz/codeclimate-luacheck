@@ -1,0 +1,12 @@
+language: C
+sudo: required
+services:
+  - docker
+before_install:
+  - wget https://raw.githubusercontent.com/codeclimate/codeclimate/v0.55.0/codeclimate-wrapper 
+  - chmod +x codeclimate-wrapper
+  - sudo mv codeclimate-wrapper /usr/local/bin/codeclimate
+script:
+  - make build
+  - make test
+  - make integration
