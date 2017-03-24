@@ -1,4 +1,4 @@
-# Code Climate luacheck Engine
+# Code Climate luacheck Engine [![Build Status](https://travis-ci.org/mikz/codeclimate-luacheck.svg?branch=master)](https://travis-ci.org/mikz/codeclimate-luacheck)
 
 CodeClimate Engine that runs [luacheck](https://github.com/mpeterv/luacheck/) on Lua files.
 Uses [linguist](https://github.com/github/linguist) to detect Lua files.
