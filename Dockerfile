@@ -14,13 +14,12 @@ RUN adduser -D -H -h /code -u 9000 -s /bin/false app \
  && apk del build-base curl lua${LUA_VERSION}-dev ruby-dev zlib-dev icu-dev cmake \
  && ln -s $(which lua${LUA_VERSION}) /usr/local/bin/lua
 
-COPY bin /usr/local/bin/
-COPY lib /usr/local/share/lua/${LUA_VERSION}/
 USER app
 VOLUME /code
-
 WORKDIR /code
 
 COPY engine.json /
+COPY bin /usr/local/bin/
+COPY lib /usr/local/share/lua/${LUA_VERSION}/
 
 CMD ["engine-luacheck"]

@@ -3,9 +3,64 @@
 require 'linguist'
 require 'find'
 require 'json'
+require 'shellwords'
 
 config_file = ENV['CONFIG_FILE'] || '/config.json'
 config = JSON.parse(File.read(config_file))
+
+exit unless config.fetch('enabled', true)
+
+options = config.fetch('config', {})
+
+
+BOOLEAN_OPTIONS = %w(allow_defined allow_defined_top compat module)
+
+truthy_value = ->(value) do
+  case value
+  when true, 'true'
+    value
+  when false, 'false'
+    false
+  end
+end
+
+boolean_options = BOOLEAN_OPTIONS.map do |name|
+  option = "--#{name.tr('_', '-')}"
+  value = options.fetch(name, { 'enabled' => 'false' })
+
+  case value
+  when Hash
+    option if truthy_value.(value.fetch('enabled', false))
+  when truthy_value.(value)
+    option
+  end
+end
+
+CHECK_OPTIONS = %w(global unused redefined unused_args unused_secondaries self)
+checks = config.fetch('checks', {})
+
+check_options = CHECK_OPTIONS.map do |name|
+  option = "--no-#{name.tr('_', '-')}"
+  check = checks.fetch(name, { 'enabled' => true })
+
+  option unless check.fetch('enabled', true)
+end
+
+ARRAY_OPTIONS = %w(globals read_globals new_globals new_read_globals not_globals ignore enable only)
+
+array_options = ARRAY_OPTIONS.map do |name|
+  values = options.fetch(name, [])
+
+  next if values.empty?
+
+  [ "--#{name.tr('_', '-')}", values ]
+end
+
+std = options.fetch('std', [])
+
+if std.any?
+  array_options << ['--std', std.join('+') ]
+end
 
 include_paths = config.fetch('include_paths', %w(.))
 
@@ -24,7 +79,10 @@ Find.find(*include_paths) do |path|
   end
 end
 
-IO.popen(['luacheck', '--formatter', 'codeclimate', *files ]) do |io|
+cmd = ['luacheck', *check_options.compact, *boolean_options.compact, *array_options.compact.flatten, '--formatter', 'codeclimate', *files ]
+STDERR.puts Shellwords.join(cmd)
+
+IO.popen(cmd) do |io|
   while (line = io.gets)
     STDOUT.print line
   end

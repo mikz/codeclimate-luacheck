@@ -5,6 +5,45 @@ engines:
     exclude_paths:
     - Dockerfile
     - ".*.yml"
+    - "test/fixtures"
+    config:
+      allow_defined:
+        enabled: true
+      allow_defined_top: false
+      module: false
+      compat: true
+      std:
+        - min
+        - busted
+      globals:
+        - val
+      read_globals:
+        - read
+      new_globals:
+        - new
+      new_read_globals:
+        - new
+      not_globals:
+        - new
+      ignore:
+        - new
+      enable:
+        - new
+      only:
+        - new
+    checks:
+      global:
+        enabled: false
+      unused:
+        enabled: true
+      redefined:
+        enabled: true
+      unused_args:
+        enabled: true
+      unused_secondaries:
+        enabled: true
+      self:
+        enabled: true
   rubocop:
     enabled: true
   bundler-audit:

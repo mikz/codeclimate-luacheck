@@ -86,7 +86,11 @@ local function event_severity(event)
 end
 
 local function event_description(event)
-	return event_info(event).description
+	local description = event_info(event).description
+
+	if description then
+		return { body = description }
+	end
 end
 
 local function event_categories(event)
@@ -97,8 +101,8 @@ local function event_remediation_points(event)
 	return event_info(event).minutes * 10000
 end
 
-local function hash(s)
-	return (s:gsub('.',function(s) return ('%2x'):format(s:byte(1)) end))
+local function hash(str)
+	return (str:gsub('.',function(char) return ('%2x'):format(char:byte(1)) end))
 end
 
 local function event_fingerprint(file, event)
