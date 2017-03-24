@@ -44,6 +44,10 @@ engines:
         enabled: true
       self:
         enabled: true
+      LC631:
+        enabled: false
+      LC632:
+        enabled: true
   rubocop:
     enabled: true
   bundler-audit:

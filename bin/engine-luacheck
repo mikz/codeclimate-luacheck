@@ -4,6 +4,7 @@ require 'linguist'
 require 'find'
 require 'json'
 require 'shellwords'
+require 'English'
 
 config_file = ENV['CONFIG_FILE'] || '/config.json'
 config = JSON.parse(File.read(config_file))
@@ -41,9 +42,23 @@ checks = config.fetch('checks', {})
 
 check_options = CHECK_OPTIONS.map do |name|
   option = "--no-#{name.tr('_', '-')}"
-  check = checks.fetch(name, { 'enabled' => true })
+  check = checks.delete(name) || { 'enabled' => true }
 
   option unless check.fetch('enabled', true)
+end
+
+ignore = options['ignore'] ||= []
+enable = options['enable'] ||= []
+
+checks.each do |name, value|
+  STDERR.puts "check: #{name} => #{value}"
+  case name
+  when /\ALC(?<pattern>.+)\z/
+    enabled = value.fetch('enabled', true)
+    (enabled ? enable : ignore) << $LAST_MATCH_INFO[:pattern]
+  else
+    STDERR.puts "unknown check: #{name}"
+  end
 end
 
 ARRAY_OPTIONS = %w(globals read_globals new_globals new_read_globals not_globals ignore enable only)
@@ -73,9 +88,14 @@ Find.find(*include_paths) do |path|
 
   blob = Linguist::FileBlob.new(path)
 
-  case blob.language
-  when Lua
-    files << path
+  begin
+    language = Linguist.detect(blob)
+    case language
+    when Lua
+      files << path
+    end
+  rescue ArgumentError => error
+    STDERR.puts "#{error} when detecting language of: #{path}"
   end
 end
 
