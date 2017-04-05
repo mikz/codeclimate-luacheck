@@ -46,7 +46,9 @@ engines:
         enabled: true
       LC631:
         enabled: false
-      LC632:
+      632:
+        enabled: true
+      ".*_":
         enabled: true
   rubocop:
     enabled: true

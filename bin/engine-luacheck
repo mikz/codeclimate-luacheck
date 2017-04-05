@@ -51,13 +51,13 @@ ignore = options['ignore'] ||= []
 enable = options['enable'] ||= []
 
 checks.each do |name, value|
-  STDERR.puts "check: #{name} => #{value}"
+  warn "check: #{name} => #{value}"
   case name
-  when /\ALC(?<pattern>.+)\z/
+  when /\A(?:LC)?(?<pattern>.+)\z/
     enabled = value.fetch('enabled', true)
     (enabled ? enable : ignore) << $LAST_MATCH_INFO[:pattern]
   else
-    STDERR.puts "unknown check: #{name}"
+    warn "unknown check: #{name}"
   end
 end
 
@@ -103,12 +103,12 @@ Find.find(*existing_paths) do |path|
       files << path
     end
   rescue ArgumentError => error
-    STDERR.puts "#{error} when detecting language of: #{path}"
+    warn "#{error} when detecting language of: #{path}"
   end
 end
 
 cmd = ['luacheck', *check_options.compact, *boolean_options.compact, *array_options.compact.flatten, '--formatter', 'codeclimate', *files ]
-STDERR.puts Shellwords.join(cmd)
+warn Shellwords.join(cmd)
 
 IO.popen(cmd) do |io|
   while (line = io.gets)

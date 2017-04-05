@@ -29,9 +29,9 @@ engines:
   luacheck:
     enabled: true
     checks:
-      LC631: # disable check 631
+      631: # disable check 631
         enabled: false
-      LC4.2: # disable shadowing declarations of arguments or redefining them
+      4.2: # disable shadowing declarations of arguments or redefining them
         enabled: false
 ```
 
