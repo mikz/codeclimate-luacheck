@@ -83,7 +83,15 @@ Lua = Linguist::Language.find_by_name('Lua')
 
 files = []
 
-Find.find(*include_paths) do |path|
+existing_paths = include_paths.select(&File.method(:exist?))
+
+missing_paths = include_paths - existing_paths
+
+unless missing_paths.empty?
+  warn "Ignoring paths: #{missing_paths.join(' ')}"
+end
+
+Find.find(*existing_paths) do |path|
   next unless FileTest.file?(path)
 
   blob = Linguist::FileBlob.new(path)

@@ -1,4 +1,5 @@
-IMAGE_NAME ?= codeclimate/codeclimate-luacheck
+CHANNEL ?= latest
+IMAGE_NAME ?= codeclimate/codeclimate-luacheck:$(CHANNEL)
 
 build:
 	docker build . -t $(IMAGE_NAME)
