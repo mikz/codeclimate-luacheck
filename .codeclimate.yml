@@ -61,3 +61,4 @@ ratings:
 exclude_paths:
 - lib/test.lua
 - "**/.*.swp"
+- integration
