@@ -1,7 +1,7 @@
 FROM alpine:3.5
 
 LABEL maintainer "Michal Cichra <michal@cichra.cz>"
-ENV LUA_VERSION=5.3 LUACHECK_VERSION=0.19.1
+ENV LUA_VERSION=5.3 LUACHECK_VERSION=0.21.2
 
 WORKDIR /tmp
 COPY Gemfile* /tmp/
