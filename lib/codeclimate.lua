@@ -69,6 +69,12 @@ local event_codes = {
 		minutes = 3,
 		description = [[https://luacheck.readthedocs.io/en/stable/warnings.html#control-flow-and-data-flow-issues]]
 	},
+	['561'] = { -- complexity
+		severity = 'major',
+		categories = { 'Complexity' },
+		minutes = function(event) return (event.complexity - event.max_complexity) * 10 end,
+		description = [[https://docs.codeclimate.com/docs/cyclomatic-complexity]]
+	},
 	['6'] = { -- whitespace
 		severity = 'info',
 		categories = { 'Style' },
@@ -78,7 +84,7 @@ local event_codes = {
 }
 
 local function event_info(event)
-	return event_codes[event.code:sub(1,1)]
+	return event_codes[event.code] or event_codes[event.code:sub(1,1)]
 end
 
 local function event_severity(event)
@@ -98,7 +104,9 @@ local function event_categories(event)
 end
 
 local function event_remediation_points(event)
-	return event_info(event).minutes * 10000
+	local minutes = event_info(event).minutes
+	if type(minutes) == 'function' then minutes = minutes(event) end
+	return minutes * 10000
 end
 
 local function hash(str)
