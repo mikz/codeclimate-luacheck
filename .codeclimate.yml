@@ -31,6 +31,7 @@ engines:
         - new
       only:
         - new
+      max_cyclomatic_complexity: 3
     checks:
       global:
         enabled: false
