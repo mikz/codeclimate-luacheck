@@ -61,6 +61,20 @@ checks.each do |name, value|
   end
 end
 
+LENGTH_OPTIONS = %w(max_line_length max_code_line_length max_string_line_length max_comment_line_length max_cyclomatic_complexity)
+
+length_options = LENGTH_OPTIONS.map do |name|
+  value = options.fetch(name, nil)
+  opt = name.tr('_', '-')
+
+  case value
+    when nil then next
+    when false then "--no-#{opt}"
+    when Numeric then [ "--#{opt}", value.to_s ]
+    else warn "Unknown value #{value} (#{value.class}) for option #{name}"
+  end
+end
+
 ARRAY_OPTIONS = %w(globals read_globals new_globals new_read_globals not_globals ignore enable only)
 
 array_options = ARRAY_OPTIONS.map do |name|
@@ -107,7 +121,15 @@ Find.find(*existing_paths) do |path|
   end
 end
 
-cmd = ['luacheck', *check_options.compact, *boolean_options.compact, *array_options.compact.flatten, '--formatter', 'codeclimate', *files ]
+cmd = [
+    'luacheck',
+    *check_options.compact,
+    *boolean_options.compact,
+    *length_options.compact.flatten,
+    *array_options.compact.flatten,
+    '--formatter', 'codeclimate',
+    *files
+]
 warn Shellwords.join(cmd)
 
 IO.popen(cmd) do |io|
